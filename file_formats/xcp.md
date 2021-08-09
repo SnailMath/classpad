@@ -14,7 +14,7 @@ The xcp file has the following structure:
 |4 | folname    |2-9 byte | ascii     | name of the folder including 0x00 terminator |
 |5 | varname_len|  2 byte | hex ascii | length of the var name + 1 (because 0x00 terminator is included) |
 |6 | varname    |2-9 byte | ascii     | name of the var including 0x00 terminator |
-|7 | block_31   |  8 byte | hex ascii | the text "00000031" |
+|7 | block_31   |  8 byte | hex ascii | the number "00000031" |
 |8 | folname2   | 16 byte | ascii     | name of the folder, padded with 0xff |
 |9 | varname2   | 16 byte | ascii     | name of the var, padded with 0xff |
 |10| length     |  4 byte | binary big endian | The length of the data block |

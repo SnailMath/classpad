@@ -50,12 +50,12 @@ The data block is structured like this:
 
 |  | Name | Length | Type | Description |
 | --- | --- | --- | --- | --- |
-|13.1| text_len   |  4 byte | binary little endian | the length of the text + 3 (probably the length of 13.3, 13.4, 13.5 together) |
-|13.2| block_zero |  8 byte | binary | eight times 0x00 |
-|13.3| block_zero |  1 byte | binary | one time 0x00 |
-|13.4| text       | len byte |  | the ascii or binary data or text (can contain every character from 0x00 to 0xff) |
-|13.5| eof        |  2 byte | binary | The file terminator "0x00 + 0xff" |
-|13.6| padding    |0-3 bytes | binary | pad the data so 'length' is a multiple of 4 (pad with (3-((len+2)&~0x03)) bytes) |
+|13.1| text_len   |    4 byte   | binary little endian | the length of the text + 3 (probably the length of 13.3, 13.4, 13.5 together) |
+|13.2| block_zero |    8 byte   | binary | eight times 0x00 |
+|13.3| block_zero |    1 byte   | binary | one time 0x00 |
+|13.4| text       |0-30720 bytes|  | the ascii or binary data or text (can contain every character from 0x00 to 0xff) |
+|13.5| eof        |    2 byte   | binary | The file terminator "0x00 + 0xff" |
+|13.6| padding    |  0-3 bytes  | binary | pad the data so 'length' is a multiple of 4 (pad with (3-((len+2)&~0x03)) bytes) |
 
 The padding is required, different versions of calculator and computer software use different characters for padding, but everything is fine here. (peresonally, I would use 0x00)
 

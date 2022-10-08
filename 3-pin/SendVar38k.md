@@ -48,31 +48,31 @@ So, now to the topic: The format of the serial communication:
 
 Different types of variables can be send, but I'll only focus on strings.
 
-|   |   | Length | Name     | Data |
+|     |  | Length | Name     | Data |
 | --- | --- | --- | --- | --- |
-|  1 | Tx |  1  |           | 15 |
-|  2 | Rx |  1  |           | 13 |
-|  3 | Tx |  1  |           | 3A |
-|  4 | Tx | 13  | Header    | 4E 44 64 00 01 00 01 **LL LL LL LL** 05 FF |
-|  5 | Tx |  1  | HeaderSum | |
-|  6 | Rx |  1  |           | 06 |
-|  7 | Tx |  1  |           | 3A |
-|  8 | Tx |  2  | PreData   | 00 01 |
-|  9 | Tx | len | Data      | |
-| 10 | Tx |  1  | Checksum  | |
-| 11 | Rx |  1  |           | 06 |
+| 1.1 | Tx |  1  |           | 15 |
+| 1.2 | Rx |  1  |           | 13 |
+| 2.1 | Tx |  1  |           | 3A |
+| 2.2 | Tx | 13  | Header    | 4E 44 64 00 01 00 01 **LL LL LL LL** 05 FF |
+| 2.3 | Tx |  1  | HeaderSum | |
+| 2.4 | Rx |  1  |           | 06 |
+| 3.1 | Tx |  1  |           | 3A |
+| 3.2 | Tx |  2  | PreData   | 00 01 |
+|  4  | Tx | len | Data      | |
+| 5.1 | Tx |  1  | Checksum  | |
+| 5.2 | Rx |  1  |           | 06 |
 
 **Header** is the header of the data, it contains the length **LLLL** which is the length of PreData and Data combined. 
 The length of the data including PreData and padding is in binary in big endian. It is repeated twice.  
 (len is always congruent to 2 modulo 4)
 
-**HeaderSum** is the header checksum, it is calculated by taking 0x00 and subtracting everything from the header (Block 4) from it.  
+**HeaderSum** is the header checksum, it is calculated by taking 0x00 and subtracting everything from the header (Block 2.2) from it.  
 
 **Data** is the string that is send itself. It is 0 terminated and padded to a length divisible by 4. The padding may consist of 00 or of random numbers.  
 If the data is longer than 0x30 bytes, it is split up into packets, with 11ms space in between.
 
 **Checksum** is the checksum of the data and the PreData. It is calculated by taking 00 and subtracting PreData and the whole data with padding from it, byte by byte.
 
-The whole timing may vary, the newer calc takes much longer to respond with the initial 0x13 than the old calc, which takes 50us. Each data thingy is seperated by around 25ns delay.
+The whole timing may vary, the newer calc takes much longer to respond with the initial 0x13 than the old calc, which takes 50us. Each data thingy is seperated by around 25ns delay. Each block (Block 1, 2, 3, 4, 5) is send continuously, even when it contains parts that are listed as single things in the table above.
 
 ![Image of the timing](screenshot01.png)
